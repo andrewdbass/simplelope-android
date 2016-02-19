@@ -28,7 +28,21 @@
         <h1 class="title">Simplelope</h1>
       </ion-header-bar>
       <ion-content>
-        {{AppCtrl.message}}
+        <div class = "list">
+          <div class = "item">You spent</div>  
+          <lablel class = "item item-input">
+              <input type="number" min="0.01" step="0.01" placeholder="$0.00" />
+          </lablel>
+          <lablel class = "item" >
+              <div>On</div>
+          </lablel>
+        </div>
+        <!-- butons for each envelope -->
+        <buton class = "button button-full button-royal">Food 10</buton>
+        <buton class = "button button-full button-royal">Food 10</buton>
+        <buton class = "button button-full button-royal">Food 10</buton>
+        <buton class = "button button-full button-royal">Food 10</buton>
+        
       </ion-content>
     </ion-pane>
   </body>
