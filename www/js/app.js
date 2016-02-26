@@ -1,20 +1,10 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
 angular.module('simplelope', ['ionic'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
     }
     if(window.StatusBar) {
@@ -22,6 +12,45 @@ angular.module('simplelope', ['ionic'])
     }
   });
 })
-.controller('AppController', function($scope){
-  this.message = "Hola!"
+.controller('AppController', function($scope, $ionicPopup){
+  $scope.expense = {}
+  $scope.envelopes = []
+  $scope.showExpenseForm = false
+  $scope.toggleExpenseForm = function(){
+    $scope.showExpenseForm = !$scope.showExpenseForm
+  }
+  $scope.newEnvelope = function() {
+    $scope.data = {}
+    $ionicPopup.show({
+      template: '<input type = "text" ng-model = "data.name" placeholder = "name"/></br><input type = "number" ng-model = "data.amount" placeholder = "ammount"/>',
+      title: 'Create Envelope',
+      scope: $scope,
+      buttons: [{
+         text: 'Cancel'
+      }, {
+         text: '<b>Save</b>',
+         type: 'button-positive',
+         onTap: function(e) {
+          return $scope.data
+         }
+      },]
+   }).then(function(res) {
+      if(res) $scope.envelopes.push(res)
+    })
+  }
+  
+  $scope.makeExpense = function(env){
+    if(env.amount - $scope.expense.amount >=0){
+      env.amount -=$scope.expense.amount
+      $scope.expense.amount = null
+      $scope.showExpenseForm = false
+    }
+    else{
+      $ionicPopup.alert({
+        title: 'Hey!',
+        template: 'You dont have enough in this envelope!</br>Split the expense up please :(',
+        okText: 'OK',
+      })
+    }
+  }
 })
